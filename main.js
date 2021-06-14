@@ -44,6 +44,8 @@ var cursors;
 var stars;
 var score;
 var scoreText;
+var topScore = 0;
+var topScoreText;
 var bombs;
 var music;
 var deathSound;
@@ -118,6 +120,11 @@ function create() {
     fontSize: "32px",
     fill: "#000",
   });
+
+  topScoreText = this.add.text(16, 64, "Top Score: " + topScore, {
+    fontSize: "32px",
+    fill: "#000",
+  });
 }
 
 function update() {
@@ -143,6 +150,10 @@ function collectStar(player, star) {
 
   score += 10;
   scoreText.setText("Score: " + score);
+  if (score >= topScore) {
+    topScore = score;
+    topScoreText.setText("Top Score: " + topScore);
+  }
 
   if (stars.countActive(true) === 0) {
     levelUp.play();
