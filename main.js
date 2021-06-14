@@ -42,7 +42,7 @@ var player;
 var platforms;
 var cursors;
 var stars;
-var score = 0;
+var score;
 var scoreText;
 var bombs;
 var music;
@@ -113,6 +113,7 @@ function create() {
   this.physics.add.collider(bombs, platforms);
   this.physics.add.collider(player, bombs, hitBomb, null, this);
 
+  score = 0;
   scoreText = this.add.text(16, 16, "Score: 0", {
     fontSize: "32px",
     fill: "#000",
@@ -161,15 +162,15 @@ function collectStar(player, star) {
 }
 
 function hitBomb(player, bomb) {
+  music.stop();
+  deathSound.play();
   player.setVelocityY(-100);
   this.physics.pause();
   player.setTint(0xff0000);
   player.anims.play("turn");
-  gameOver = true;
-  this.scene.restart();
+  this.cameras.main.shake(2000, 0.005);
 
-  if (gameOver === true) {
-    music.stop();
-    deathSound.play();
-  }
+  setTimeout(() => {
+    this.scene.restart();
+  }, 2000);
 }
